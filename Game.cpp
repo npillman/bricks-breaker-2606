@@ -20,6 +20,7 @@ void Game::Reset()
 	ResetBall();
 
 	// TODO #2 - Add this brick and 4 more bricks to the vector
+	bricks.clear();
 
 	Box brick;
 	brick.width = 10;
@@ -82,6 +83,13 @@ void Game::Render() const
 		std::cout << "You win! Press 'R' to play again.";
 		Console::Lock(false);
 		return;
+	}else if (gameLost)
+	{
+		Console::SetCursorPosition(30, 20);
+		Console::ForegroundColor(ConsoleColor::Red);
+		std::cout << "You lost! Press 'R' to play again.";
+		Console::Lock(false);
+		return;
 	}
 
 	paddle.Draw();
@@ -138,4 +146,10 @@ void Game::CheckCollision()
 	}
 
 	// TODO #7 - If ball touches bottom of window, pause ball and display (render) defeat text with R to reset
+	if (ball.y_position >= WINDOW_HEIGHT)
+	{
+		gameLost = true;
+		ball.x_velocity = 0;
+		ball.y_velocity = 0;
+	}
 }
